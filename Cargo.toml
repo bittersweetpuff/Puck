@@ -1,5 +1,5 @@
 [package]
-name = "Puck"
+name = "puck"
 version = "0.1.0"
 authors = ["BittersweetPuff"]
 edition = "2018"
