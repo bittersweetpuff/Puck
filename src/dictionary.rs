@@ -33,12 +33,14 @@ enum WordType {
 #[derive(Debug)]
 pub struct Dictionary {
     lexicon: HashMap<WordType, Vec<String>>,
+    roman_values: HashMap<char, i32>, 
 }
 
 impl Dictionary {
     pub fn build() -> Dictionary {
         let mut dict = Dictionary {
             lexicon: HashMap::new(),
+            roman_values: HashMap::new(), 
         };
 
         let path = Path::new("./lang/");
@@ -76,6 +78,14 @@ impl Dictionary {
             read_file_into_vector(path.join("zero_nouns.wordlist").as_path()),
         );
 
+        dict.roman_values.insert('M', 1000);
+        dict.roman_values.insert('D', 500);
+        dict.roman_values.insert('C', 100);
+        dict.roman_values.insert('L', 50);
+        dict.roman_values.insert('X', 10);
+        dict.roman_values.insert('V', 5);
+        dict.roman_values.insert('I', 1);
+        
         dict
     }
 
@@ -161,5 +171,29 @@ impl Dictionary {
         } else {
             0
         }
+    }
+
+    pub fn is_roman_numeral(&self, roman: char) -> bool {
+        self.roman_values.contains_key(&roman)
+    }
+
+    pub fn parse_roman_numeral(&self, roman_string: String) -> i32 {
+
+        let chars: Vec<char> = roman_string.to_uppercase().chars().collect();
+        let mut string_index = 0;
+        let mut roman_sum = 0;
+
+        let mut boo: i32 = 999;
+
+        boo
+
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {
+        assert_eq!(2 + 2, 4);
     }
 }
