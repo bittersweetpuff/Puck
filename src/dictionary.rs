@@ -33,14 +33,14 @@ enum WordType {
 #[derive(Debug)]
 pub struct Dictionary {
     lexicon: HashMap<WordType, Vec<String>>,
-    roman_values: HashMap<char, i32>, 
+    roman_values: HashMap<char, i32>,
 }
 
 impl Dictionary {
     pub fn build() -> Dictionary {
         let mut dict = Dictionary {
             lexicon: HashMap::new(),
-            roman_values: HashMap::new(), 
+            roman_values: HashMap::new(),
         };
 
         let path = Path::new("./lang/");
@@ -85,7 +85,7 @@ impl Dictionary {
         dict.roman_values.insert('X', 10);
         dict.roman_values.insert('V', 5);
         dict.roman_values.insert('I', 1);
-        
+
         dict
     }
 
@@ -172,28 +172,35 @@ impl Dictionary {
             0
         }
     }
-
+    ///Checks is char is a roman numeral character
     pub fn is_roman_numeral(&self, roman: char) -> bool {
         self.roman_values.contains_key(&roman)
     }
+    ///Returns a value of single roman numeral character
+    pub fn get_roman_value(&self, roman: char) -> i32 {
+        if !self.roman_values.contains_key(&roman) {
+            panic!("Thats not a roman number character!")
+        }
 
+        *self.roman_values.get(&roman).unwrap()
+    }
+    ///Parses a string containing roman numeral number to i32
     pub fn parse_roman_numeral(&self, roman_string: String) -> i32 {
-
         let chars: Vec<char> = roman_string.to_uppercase().chars().collect();
         let mut string_index = 0;
         let mut roman_sum = 0;
 
-        let mut boo: i32 = 999;
+        while string_index < chars.len() - 1 {
+            if self.get_roman_value(chars[string_index])
+                < self.get_roman_value(chars[string_index + 1])
+            {
+                roman_sum -= self.get_roman_value(chars[string_index]);
+            } else {
+                roman_sum += self.get_roman_value(chars[string_index]);
+            }
 
-        boo
-
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+            string_index += 1;
+        }
+        roman_sum + self.get_roman_value(chars[string_index])
     }
 }
